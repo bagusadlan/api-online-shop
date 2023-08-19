@@ -1,10 +1,12 @@
 const express = require("express")
 
+const config = require('./config/config')
+
 const app = express()
-const port = 8081
+app.use(express.json())
 
 require('./routes')(app)
 
-app.listen(port, () => {
-  console.log(`server running on port: ${port}`)
+app.listen(process.env.PORT || config.port, () => {
+  console.log(`server running on port: ${config.port}`)
 })
