@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
 )
 
 fs
-  .readFileSync(__dirname)
+  .readdirSync(__dirname)
   .filter(file =>
     file !== 'index.js'
   )
