@@ -38,5 +38,13 @@ module.exports = {
         message: error.message
       })
     }
+  },
+
+  async store(req, res) {
+    try {
+      
+    } catch (error) {
+      
+    }
   }
 }
