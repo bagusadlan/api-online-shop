@@ -13,4 +13,5 @@ module.exports = (app) => {
   app.post('/api/products', ProductsController.store)
   app.get('/api/products/:productId', ProductsController.show)
   app.put('/api/products/:productId', ProductsController.put)
+  app.delete('/api/products/productId', ProductsController.delete)
 }
