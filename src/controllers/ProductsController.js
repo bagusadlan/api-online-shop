@@ -1,5 +1,6 @@
 let { Product } = require('../models')
 const { Op } = require('sequelize')
+const { successResponse, errorResponse } = require('../utils/response')
 
 module.exports = {
   async index(req, res) {
@@ -62,11 +63,21 @@ module.exports = {
     }
   },
 
-  async store(req, res) {
+  async show(req, res) {
     try {
-      
+      const { productId } = req.params
+
+      const product = await Product.findOne({
+        where: {
+          id: productId
+        }
+      })
+
+      if (!product) return errorResponse(res, "Product tidak ditemukan", 404)
+
+      successResponse(res, "Product berhasil ditemukan", product, 200)
     } catch (error) {
-      
+      errorResponse(res, error.message)
     }
   },
 
