@@ -5,6 +5,7 @@ module.exports = (app) => {
   app.get('/', () => {
     console.log('home');
   })
-  app.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
+  app.post('/api/register', AuthenticationControllerPolicy.register, AuthenticationController.register)
+  app.post('/api/login', AuthenticationController.login)
 
 }
