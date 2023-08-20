@@ -5,9 +5,10 @@ module.exports = {
   async index(req, res) {
     try {
       const search = req.query.search
+      let products
 
       if (search) {
-        const products = await Product.findAll({
+        products = await Product.findAll({
           where: {
             [Op.or]: {
               name: {
@@ -21,20 +22,41 @@ module.exports = {
           limit: 10
         })
       } else {
-        const products = await Products.findAll({
+        products = await Product.findAll({
           limit: 10
         })
       }
 
       res.send({
         code: 200,
-        status: success,
+        status: "success",
         data: products
       })
     } catch (error) {
       res.status(500).send({
         statusCode: 500,
-        status: failed,
+        status: "failed",
+        message: error.message
+      })
+    }
+  },
+
+  async store(req, res) {
+    try {
+      const { name, category, price, descripttion } = req.body
+      console.log(req.body);
+
+      const product = await Product.create(req.body)
+
+      res.send({
+        status: "success",
+        code: 200,
+        data: product
+      })
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
         message: error.message
       })
     }
