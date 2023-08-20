@@ -44,5 +44,38 @@ module.exports = {
         message: error.message
       })
     }
+  },
+  async login(req, res) {
+    try {
+      const { email, password } = req.body
+      const user = await User.findOne({
+        where: {
+          email: email
+        }
+      })
+
+      if (!user) {
+        return res.status(403).send({
+          message: "Pengguna tidak ditemukan"
+        })
+      }
+
+      const isPasswordValid = user.comparePassword(password)
+
+      if (!isPasswordValid) {
+        return res.status(403).send({
+          message: "Password salah"
+        })
+      }
+
+      const userJson = user.toJSON()
+      res.send({
+        message: `Halo ${user.name}! Selamat datang`,
+        user: userJson,
+        token: jwtSignUser(userJson)
+      })
+    } catch (error) {
+      
+    }
   }
 }
