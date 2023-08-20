@@ -118,5 +118,25 @@ module.exports = {
         message: error.message
       })
     }
+  },
+
+  async delete(req, res) {
+    try {
+      const { productId } = req.params
+
+      const product = await Product.findOne({
+        where: {
+          id: productId
+        }
+      })
+
+      if (!product) {
+        errorResponse(res, "Produk tidak ditemukan", 404)
+      }
+
+      successResponse(res, "Berhasil menghapus data", product, 200)
+    } catch (error) {
+      errorResponse(res, "Gagal menghapus data")
+    }
   }
 }
