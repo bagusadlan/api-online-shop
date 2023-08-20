@@ -68,5 +68,44 @@ module.exports = {
     } catch (error) {
       
     }
+  },
+
+  async put(req, res) {
+    try {
+      const { productId } = req.params
+
+      const product = await Product.findOne({
+        where: {
+          id: productId
+        }
+      })
+
+      if (!product) {
+        return res.status(404).send({
+          status: false,
+          code: 404,
+          message: "Produk tidak ditemukan"
+        })
+      }
+
+      const newProduct = await Product.update(req.body, {
+        where: {
+          id: productId
+        }
+      })
+
+      res.send({
+        status: true,
+        code: 200,
+        message: "Berhasil mengubah data",
+        data: req.body
+      })
+    } catch (error) {
+      res.status(500).send({
+        status: false,
+        code: 500,
+        message: error.message
+      })
+    }
   }
 }

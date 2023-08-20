@@ -11,5 +11,5 @@ module.exports = (app) => {
 
   app.get('/api/products', ProductsController.index)
   app.post('/api/products', ProductsController.store)
-  app.put('/api/products/:id', ProductsController.put)
+  app.put('/api/products/:productId', ProductsController.put)
 }
