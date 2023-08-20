@@ -1,20 +1,7 @@
 const { User } = require('../models')
 const jwt = require('jsonwebtoken')
+const { Op } = require("sequelize")
 const config = require('../config/config')
-
-async function checkUser(field, type) {
-  const userExist = await User.findOne({
-    where: {
-      field: field
-    }
-  })
-
-  if (userExist) {
-    return res.status(403).send({
-      message: `${type} sudah terdaftar`
-    })
-  }
-}
 
 function jwtSignUser(user) {
   const ONE_WEEK = 60 * 60 * 24 * 7
@@ -27,9 +14,21 @@ module.exports = {
   async register(req, res) {
     try {
       const { name, username, email, password } = req.body
-
-      checkUser(email, 'Email')
-      checkUser(username, 'User')
+      
+      const userExist = await User.findOne({
+        where: {
+          [Op.or]: [
+            { username: username },
+            { email: email }
+          ]
+        }
+      })
+    
+      if (userExist) {
+        return res.status(403).send({
+          message: 'Pengguna sudah terdaftar'
+        })
+      }
 
       const user = await User.create(req.body)
       const userJson = user.toJSON()
